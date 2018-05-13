@@ -8,5 +8,5 @@ def index():
     '''
     View root page function that returns the index page and its data
     '''
-    message = 'News-Highlights'
-    return render_template('index.html',message = message)
+    title = 'The best News-Highlights Website Online'
+    return render_template('index.html',title = title)
