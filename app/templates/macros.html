@@ -1,0 +1,11 @@
+{% macro displaySourceList(source_list) %}
+
+    {% for source in source_list %}
+    <div class="col-sm-3">
+        <a href="/news/{{source.id}}">{{source.name}}</a>
+      </div>
+    {% endfor %} 
+    
+{% endmacro %}
+
+

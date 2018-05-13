@@ -1,3 +1,5 @@
+{% import 'macros.html' as macro%}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +13,20 @@
     {% endif %}
 </head>
 <body>
-    
+    <div class="container-fluid mt-4">
+        <div id="generalNews" class="collapse">
+            <div class="card">
+              <div class="card-header">
+                Choose your preferred news agency. 
+              </div>
+              <div class="card-body">
+                <h3 class="card-title">General News Sources</h3>
+                <div class="row">
+                  {{macro.displaySourceList(general)}}
+                </div>
+              </div>
+            </div>
+          </div>
+    </div>
 </body>
 </html>
