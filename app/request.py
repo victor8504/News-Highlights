@@ -77,3 +77,38 @@ def get_articles(id):
             news_results = process_articles(news_results_list)
 
     return news_results
+
+def process_articles(articles_list):
+    '''
+    Function  that processes the news articles and transform them to a list of Objects
+
+    Args:
+        articles_list: A list of dictionaries that contain news articles
+
+    Returns :
+        news_results: A list of news objects
+    '''
+    news_results = []
+    source_dictionary = {}
+    for result in articles_list:
+        source_id = result['source'] # Store the dictionary in source_id
+
+        source_dictionary['id'] = source_id['id'] # Is extracted and stored in the source_dictionary
+        source_dictionary['name'] = source_id['name']
+
+        id = source_dictionary['id']
+        name = source_dictionary['name']
+        print(name)
+        author = result.get('author')
+        title = result.get('title')
+        description = result.get('description')
+        url = result.get('url')
+        imageURL = result.get('imageURL')
+        publishedAt = result.get('publishedAt')
+
+        if imageURL:
+            print(id)
+            source_object = NewsArticles(id,name,author,title,description,url,imageURL, publishedAt)
+            news_results.append(source_object)
+
+    return news_results
