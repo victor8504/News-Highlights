@@ -1,18 +1,21 @@
-from app import app
 import urllib.request,json
-from .models import news_source, news_articles
-
-NewsSource = news_source.NewsSource
-NewsArticles = news_articles.NewsArticles
+from .models import NewsSource, NewsArticles
 
 # Getting api key
-api_key = app.config["NEWS_API_KEY"]
+api_key = None
 
 # Getting the news base url
-base_url = app.config["BASE_NEWS_API_URL"]
+base_url = None
 
 # Getting the source news url
-source_url = app.config['SOURCE_NEWS_URL']
+source_url = None
+
+def configure_request(app):
+    global api_key,base_url,source_url
+    api_key = app.config['NEWS_API_KEY']
+    base_url = app.config['BASE_NEWS_API_URL']
+    source_url = app.config['SOURCE_NEWS_URL']
+    
 
 
 def get_sources(country, category):
@@ -60,20 +63,22 @@ def process_sources(source_list):
 
     return news_results
 
-def get_articles(id):
+def get_articles(source):
     '''
     Function that gets the json response to our url request
     '''
-    get_source_news_url = source_url.format(id, api_key)
+    get_source_news_url = source_url.format(source, api_key)
         
     with urllib.request.urlopen(get_source_news_url) as url:
         get_news_data = url.read()
         get_news_response = json.loads(get_news_data)
+       
 
         news_results = None
 
         if get_news_response['articles']:
             news_results_list = get_news_response['articles']
+           
             news_results = process_articles(news_results_list)
 
     return news_results
@@ -89,26 +94,18 @@ def process_articles(articles_list):
         news_results: A list of news objects
     '''
     news_results = []
-    source_dictionary = {}
     for result in articles_list:
-        source_id = result['source'] # Store the dictionary in source_id
-
-        source_dictionary['id'] = source_id['id'] # Is extracted and stored in the source_dictionary
-        source_dictionary['name'] = source_id['name']
-
-        id = source_dictionary['id']
-        name = source_dictionary['name']
-        print(name)
+        id = result['source'].get('id')
+        name = result['source'].get('name')            
         author = result.get('author')
         title = result.get('title')
         description = result.get('description')
         url = result.get('url')
-        imageURL = result.get('imageURL')
+        urlToImage = result.get('urlToImage')
         publishedAt = result.get('publishedAt')
 
-        if imageURL:
-            print(id)
-            source_object = NewsArticles(id,name,author,title,description,url,imageURL, publishedAt)
-            news_results.append(source_object)
+        source_object = NewsArticles(id,name,author,title,description,url,urlToImage,publishedAt)
+        print(source_object)
+        news_results.append(source_object)
 
     return news_results

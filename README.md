@@ -20,6 +20,7 @@
   * pip install python3.6
   * pip install flask
   * pip install Flask-Bootstrap4
+  * pip install flask-script
 
 ## Technical Requirements
 
@@ -40,6 +41,7 @@ Users would like to:
  * Python3.6
  * Flask framework
  * Bootstrap4
+ * flask-script
 
 ## Known Bugs
 
